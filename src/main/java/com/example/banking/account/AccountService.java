@@ -1,18 +1,15 @@
 package com.example.banking.account;
 
-import com.example.banking.user.User;
-import com.example.banking.user.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.swing.text.html.Option;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Component
 public class AccountService {
-    public AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
     @Autowired
     public AccountService(AccountRepository accountRepository){
@@ -24,6 +21,7 @@ public class AccountService {
     }
 
 
+    @Transactional
     public void addNewAccount(Account account) {
         Optional<Account> accountOptional = accountRepository.findById(account.getId());
         if (accountOptional.isPresent()){
@@ -33,6 +31,7 @@ public class AccountService {
         accountRepository.save(account);
     }
 
+    @Transactional
     public void deleteAccount(Long accountId){
         boolean exists = accountRepository.existsById(accountId);
         if (!exists){
@@ -41,6 +40,7 @@ public class AccountService {
         accountRepository.deleteById(accountId);
     }
 
+    @Transactional
     public void updateAccount(Long accountId, int maxDeposit){
         Optional<Account> accountOptional = accountRepository.findById(accountId);
         if (accountOptional.isEmpty()){
@@ -52,6 +52,30 @@ public class AccountService {
         if (maxDeposit > 0 && maxDeposit != account.getMaxDeposit()){
             account.setMaxDeposit(maxDeposit);
         }
+    }
+
+    @Transactional
+    public void transferFunds(Long sourceAccountId, Long destAccountId, int transferAmountCents) {
+        Optional<Account> sourceAccountOptional = accountRepository.findById(sourceAccountId);
+        Optional<Account> destAccountOptional = accountRepository.findById(destAccountId);
+        if (sourceAccountOptional.isEmpty() || destAccountOptional.isEmpty()){
+            throw new IllegalStateException("Invalid source/destination account ID.");
+        }
+        Account sourceAccount = sourceAccountOptional.get();
+        Account destAccount = destAccountOptional.get();
+        if (sourceAccount.getBalance() < transferAmountCents){
+            throw new IllegalStateException("Transfer amount exceeds balance in source account.");
+        }
+        int oldSourceBalance = sourceAccount.getBalance();
+        int oldDestBalance = destAccount.getBalance();
+        sourceAccount.withdraw(transferAmountCents);
+        destAccount.deposit(transferAmountCents);
+
+        if (oldDestBalance + transferAmountCents != destAccount.getBalance() || sourceAccount.getBalance() + transferAmountCents != oldSourceBalance)
+        {
+            throw new IllegalStateException("Balances are not consistent. Reverting transfer.");
+        }
+
     }
 }
 

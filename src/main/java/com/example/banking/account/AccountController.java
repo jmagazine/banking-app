@@ -36,4 +36,12 @@ public class AccountController {
         accountService.deleteAccount(accountId);
     }
 
+    @PostMapping(path = "transfer")
+    public void transferFunds(@RequestParam("sourceAccountId") Long sourceAccountId,
+                              @RequestParam("destAccountId") Long destAccountId,
+                              @RequestParam("transferAmountCents") int transferAmountCents
+                              ){
+        accountService.transferFunds(sourceAccountId, destAccountId, transferAmountCents);
+    }
+
 }
