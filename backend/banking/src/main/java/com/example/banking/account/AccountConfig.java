@@ -22,6 +22,8 @@ public class AccountConfig {
                     "Peter",
                     "Griffin",
                     "petey33@aol.com",
+                    "peteywetey03",
+                    "superSecretPassword",
                     LocalDate.of(2000, Month.JANUARY, 12)
             );
             userRepository.save(owner);

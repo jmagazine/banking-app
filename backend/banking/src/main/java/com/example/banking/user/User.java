@@ -14,31 +14,53 @@ public class User {
     allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
     generator = "user_sequence")
+    @Column(unique = true)
     private long id;
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String email;
+    @Column(unique = true)
+    private String username;
+    public User(long id, String firstName, String lastName, String email, String username, String password, LocalDate dob, Integer age) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.dob = dob;
+        this.age = age;
+    }
+    private String password;
     private LocalDate dob;
-    
+
     @Transient
     private Integer age;
 
     public User(){}
 
-    public User(long id, String firstName, String lastName, String email, LocalDate dob) {
+    public User(long id, String firstName, String lastName, String email, String username, String password, LocalDate dob) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.username = username;
+        this.password = password;
         this.dob = dob;
     }
 
-    public User(String firstName, String lastName, String email, LocalDate dob) {
+    public User(String firstName, String lastName, String email, String username, String password, LocalDate dob) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.username = username;
+        this.password = password;
         this.dob = dob;
     }
+
+
+
 
     public long getId() {
         return id;
@@ -72,6 +94,21 @@ public class User {
         this.email = email;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public LocalDate getDob() {
         return dob;
     }
@@ -92,10 +129,11 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "Id=" + id +
+                "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
                 ", dob=" + dob +
                 ", age=" + age +
                 '}';

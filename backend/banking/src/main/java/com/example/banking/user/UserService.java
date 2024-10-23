@@ -1,5 +1,7 @@
 package com.example.banking.user;
 
+import jakarta.transaction.Transactional;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,31 +19,48 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getUsers(){
+    public List<User> getAllUsers(){
         return userRepository.findAll();
     }
 
-    public void addNewUser(User user) {
-        Optional<User> userOptional = userRepository.findUserByEmail(user.getEmail());
+    @Transactional
+    public User findUserByCredentials(String username, String password){
+        Optional<User> userOptional = userRepository.findUserByCredentials(username, password);
+        if (userOptional.isEmpty()){
+            throw new UserNotFoundException();
+        }
+        return userOptional.get();
+    }
+
+    @Transactional
+    public void addNewUser(@NotNull User user) {
+        String email =  user.getEmail();
+        String username = user.getUsername();
+        Optional<User> userOptional = userRepository.findUserByEmail(email);
         if (userOptional.isPresent()){
-            throw new IllegalStateException("User already exists");
+            throw new EmailAlreadyInUseException();
+        }
+        userOptional = userRepository.findUserByUsername(username);
+        if (userOptional.isPresent()){
+            throw new UsernameAlreadyInUseException(String.format("Username %s is already taken.", username));
         }
         userRepository.save(user);
     }
 
-    public void deleteUser(Long userId){
+    @Transactional
+    public void deleteUser(@NotNull Long userId){
         boolean exists = userRepository.existsById(userId);
         if (!exists){
-            throw new IllegalStateException("Student with id " + userId+ " does not exist");
+            throw new UserNotFoundException(String.format("User with id %s does not exist", userId));
         }
         userRepository.deleteById(userId);
     }
 
-
-    public void updateUser(Long userId, String firstName, String lastName, String email) {
+    @Transactional
+    public void updateUser(Long userId, String firstName, String lastName, String email, String username, String password) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()){
-            throw new IllegalStateException("User with id " + userId + " does not exist.");
+            throw new UserNotFoundException("User with id " + userId + " does not exist.");
         }
         User user = userOptional.get();
         if (firstName!= null && !firstName.isEmpty() &&
@@ -58,9 +77,14 @@ public class UserService {
                 !Objects.equals(user.getEmail(), email)){
             Optional<User> existingUser = userRepository.findUserByEmail(email);
             if (existingUser.isPresent()){
-                throw new IllegalStateException("That email is already in use. Please sign in.");
+                throw new EmailAlreadyInUseException(String.format("Email %s is already in use. Please sign in.", email));
             }
             user.setEmail(email);
         }
+        if (username != null && !username.isEmpty() && !Objects.equals(user.getUsername(), username)){
+            Optional<User> existingUser = userRepository.findUserByUsername(username);
+        }
     }
+
 }
+

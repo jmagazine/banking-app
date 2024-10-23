@@ -41,7 +41,7 @@ public class InvestmentService {
 
     public float geometricBrownianMotion(float prior, float drift, float volatility, int dt){
         // dt: time in ms
-        float dtInSeconds = dt/1000;
+        float dtInSeconds = (float) dt /1000;
         float z = (float) (-0.6 + Math.random())  ;
         float exponent = (drift - 0.5f * volatility * volatility) * dtInSeconds
                 + volatility * (float) Math.sqrt(dtInSeconds) * z;
@@ -58,24 +58,23 @@ public class InvestmentService {
     @Transactional
     public void updateStocks(){
         List<Investment> investments = investmentRepository.getAllInvestments("STOCK");
-        for (int i = 0; i < investments.size(); i++){
-            Stock stock = (Stock) investments.get(i);
+        for (Investment investment : investments) {
+            Stock stock = (Stock) investment;
             int last = stock.getLast();
             int high = stock.getHigh();
             int low = stock.getLow();
             float driftMin = 0.00001f;
             float driftMax = 0.00004f;
-            float drift = (float) (driftMin + Math.random() * (driftMax-driftMin));
+            float drift = (float) (driftMin + Math.random() * (driftMax - driftMin));
             float volatilityMin = 0.0001f;
             float volatilityMax = 0.0002f;
-            float volatility = (float) (volatilityMin + Math.random() * (volatilityMax-volatilityMin));
+            float volatility = (float) (volatilityMin + Math.random() * (volatilityMax - volatilityMin));
             int newPrice = (int) (geometricBrownianMotion(last, drift, volatility, 1000));
-            System.out.println("New Price: " + newPrice);
             stock.setLast(newPrice);
-            if (newPrice > high){
+            if (newPrice > high) {
                 stock.setHigh(newPrice);
             }
-            if (newPrice < low){
+            if (newPrice < low) {
                 stock.setLow(newPrice);
             }
 

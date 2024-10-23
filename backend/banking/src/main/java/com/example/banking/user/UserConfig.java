@@ -18,10 +18,14 @@ public class UserConfig {
             User dennis = new User("Dennis",
                     "Ethan",
                     "dethan03@gmail.com",
+                    "d_eth03",
+                    "abcdefg",
                     LocalDate.of(2001, NOVEMBER, 12));
             User cindy = new User("Cindy",
                     "Pratt",
-                    "cprat0404@ymail.com",
+                    "cpratt0404@ymail.com",
+                    "cpratt0404",
+                    "helloworld",
                     LocalDate.of(1992, OCTOBER, 3));
 
             repository.saveAll(List.of(dennis, cindy));
