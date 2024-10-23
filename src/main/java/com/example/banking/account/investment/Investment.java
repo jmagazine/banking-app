@@ -3,10 +3,12 @@ package com.example.banking.account.investment;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "investments")
+@DiscriminatorColumn(name = "investment_type")
 public abstract class Investment {
     @Id
     @SequenceGenerator(name = "investments_sequence",
@@ -33,4 +35,23 @@ public abstract class Investment {
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Investment that = (Investment) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Investment{" +
+                "id=" + id +
+                '}';
+    }
 }

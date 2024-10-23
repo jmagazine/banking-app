@@ -54,4 +54,100 @@ public class Stock extends Investment {
         this.totalTradedQuantity = totalTradedQuantity;
         this.totalTradedValue = totalTradedValue;
     }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public String getSeries() {
+        return series;
+    }
+
+    public void setSeries(String series) {
+        this.series = series;
+    }
+
+    public int getOpen() {
+        return open;
+    }
+
+    public void setOpen(int open) {
+        this.open = open;
+    }
+
+    public int getHigh() {
+        return high;
+    }
+
+    public void setHigh(int high) {
+        this.high = high;
+    }
+
+    public int getLow() {
+        return low;
+    }
+
+    public void setLow(int low) {
+        this.low = low;
+    }
+
+    public int getClose() {
+        return close;
+    }
+
+    public void setClose(int close) {
+        this.close = close;
+    }
+
+    public int getLast() {
+        return last;
+    }
+
+    public void setLast(int last) {
+        this.last = last;
+    }
+
+    public int getPrevClose() {
+        return prevClose;
+    }
+
+    public void setPrevClose(int prevClose) {
+        this.prevClose = prevClose;
+    }
+
+    public int getTotalTradedQuantity() {
+        return totalTradedQuantity;
+    }
+
+    public void setTotalTradedQuantity(int totalTradedQuantity) {
+        this.totalTradedQuantity = totalTradedQuantity;
+    }
+
+    public int getTotalTradedValue() {
+        return totalTradedValue;
+    }
+
+    public void setTotalTradedValue(int totalTradedValue) {
+        this.totalTradedValue = totalTradedValue;
+    }
+
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "symbol='" + symbol + '\'' +
+                ", series='" + series + '\'' +
+                ", open=" + open +
+                ", high=" + high +
+                ", low=" + low +
+                ", close=" + close +
+                ", last=" + last +
+                ", prevClose=" + prevClose +
+                ", totalTradedQuantity=" + totalTradedQuantity +
+                ", totalTradedValue=" + totalTradedValue +
+                '}';
+    }
 }
