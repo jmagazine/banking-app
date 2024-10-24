@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/accounts")
+@CrossOrigin(origins = "*")
+
 public class AccountController {
 
     private AccountService accountService;
@@ -42,6 +45,15 @@ public class AccountController {
                               @RequestParam("transferAmountCents") int transferAmountCents
                               ){
         accountService.transferFunds(sourceAccountId, destAccountId, transferAmountCents);
+    }
+
+    @GetMapping(params = "ownerId")
+    public List<Account> getAccountsOwnedByUser(@RequestParam(required = true) Long ownerId){
+        Optional<List<Account>> accountListOptional = accountService.getAccountsOwnedByUser(ownerId);
+        if (accountListOptional.isEmpty()){
+            throw new UserOwnsNoAccountsException(String.format("User with id %d does not have any accounts.", ownerId));
+        }
+        return accountListOptional.get();
     }
 
 }

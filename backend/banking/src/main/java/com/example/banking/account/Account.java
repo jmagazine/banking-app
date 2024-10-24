@@ -15,23 +15,22 @@ public abstract class Account {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator = "account_sequence")
     private long id;
-    @ManyToOne
-    private User owner;
+    private long ownerId;
     private int balanceCents;
     private LocalDate creationDate;
 
     private int maxDeposit;
 
-    public Account(long id, User owner, int balanceCents, LocalDate creationDate, int maxDeposit) {
+    public Account(long id, long ownerId, int balanceCents, LocalDate creationDate, int maxDeposit) {
         this.id = id;
-        this.owner = owner;
+        this.ownerId = ownerId;
         this.balanceCents = balanceCents;
         this.creationDate = creationDate;
         this.maxDeposit = maxDeposit;
     }
 
-    public Account(User owner, int balanceCents, LocalDate creationDate, int maxDeposit) {
-        this.owner = owner;
+    public Account(long ownerId, int balanceCents, LocalDate creationDate, int maxDeposit) {
+        this.ownerId = ownerId;
         this.balanceCents = balanceCents;
         this.creationDate = creationDate;
         this.maxDeposit = maxDeposit;
@@ -42,12 +41,12 @@ public abstract class Account {
     public Account() {
     }
 
-    public User getOwner() {
-        return owner;
+    public long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setOwnerId(long ownerId) {
+        this.ownerId = ownerId;
     }
 
     public int getBalance() {

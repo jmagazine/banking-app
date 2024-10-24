@@ -27,8 +27,8 @@ public class AccountConfig {
                     LocalDate.of(2000, Month.JANUARY, 12)
             );
             userRepository.save(owner);
-            Account account1 = new CheckingAccount(owner, 100*10000, LocalDate.now(), 10000*100, 250*100);
-            Account account2 = new SavingsAccount(owner, 100*100, LocalDate.now(), 10000*100, 0.05);
+            Account account1 = new CheckingAccount(owner.getId(), 100*10000, LocalDate.now(), 10000*100, 250*100);
+            Account account2 = new SavingsAccount(owner.getId(), 100*100, LocalDate.now(), 10000*100, 0.05);
             accountRepository.saveAll(List.of(account1, account2));
         };
     }

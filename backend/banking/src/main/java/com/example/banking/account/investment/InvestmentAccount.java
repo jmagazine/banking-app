@@ -29,13 +29,13 @@ public class InvestmentAccount extends Account {
 
     }
     @Autowired
-    public InvestmentAccount(long id, User owner, int balanceCents, LocalDate creationDate, int maxDeposit, HashMap<Long, Float> investments) {
-        super(id, owner, balanceCents, creationDate, maxDeposit);
+    public InvestmentAccount(long id, long ownerId, int balanceCents, LocalDate creationDate, int maxDeposit, HashMap<Long, Float> investments) {
+        super(id, ownerId, balanceCents, creationDate, maxDeposit);
         this.investments = investments;
     }
 
-    public InvestmentAccount(User owner, int balanceCents, LocalDate creationDate, int maxDeposit, HashMap<Long, Float> investments) {
-        super(owner, balanceCents, creationDate, maxDeposit);
+    public InvestmentAccount(long ownerId, int balanceCents, LocalDate creationDate, int maxDeposit, HashMap<Long, Float> investments) {
+        super(ownerId, balanceCents, creationDate, maxDeposit);
         this.investments = investments;
     }
 

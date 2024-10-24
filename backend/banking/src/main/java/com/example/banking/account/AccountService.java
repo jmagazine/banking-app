@@ -77,5 +77,10 @@ public class AccountService {
         }
 
     }
+
+    @Transactional
+    public Optional<List<Account>> getAccountsOwnedByUser(Long userId) {
+        return accountRepository.getAccountsOwnedByUser(userId);
+    }
 }
 

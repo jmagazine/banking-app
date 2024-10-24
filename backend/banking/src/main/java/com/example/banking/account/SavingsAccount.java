@@ -14,13 +14,13 @@ public class SavingsAccount extends Account {
     public SavingsAccount() {
     }
 
-    public SavingsAccount(long id, User owner, int balanceCents, LocalDate creationDate, int maxDeposit, double interestRate) {
-        super(id, owner, balanceCents, creationDate, maxDeposit);
+    public SavingsAccount(long id, long ownerId, int balanceCents, LocalDate creationDate, int maxDeposit, double interestRate) {
+        super(id, ownerId, balanceCents, creationDate, maxDeposit);
         this.interestRate = interestRate;
     }
 
-    public SavingsAccount(User owner, int balanceCents, LocalDate creationDate, int maxDeposit, double interestRate) {
-        super(owner, balanceCents, creationDate, maxDeposit);
+    public SavingsAccount(long ownerId, int balanceCents, LocalDate creationDate, int maxDeposit, double interestRate) {
+        super(ownerId, balanceCents, creationDate, maxDeposit);
         this.interestRate = interestRate;
     }
 

@@ -15,8 +15,8 @@ public class CheckingAccount extends Account {
     public CheckingAccount() {
     }
 
-    public CheckingAccount(User owner, int balanceCents, LocalDate creationDate, int maxDeposit, int overdraftLimit) {
-        super(owner, balanceCents, creationDate, maxDeposit);
+    public CheckingAccount(long ownerId, int balanceCents, LocalDate creationDate, int maxDeposit, int overdraftLimit) {
+        super(ownerId, balanceCents, creationDate, maxDeposit);
         this.overdraftLimit = overdraftLimit;
     }
 

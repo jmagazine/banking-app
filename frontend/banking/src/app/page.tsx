@@ -2,8 +2,9 @@
 import "bootstrap/dist/css/bootstrap.css";
 import "./globals.css";
 import "./page.css";
-import "../services/apiService";
-import { User } from "../services/user";
+import "../api/users/userService";
+import { User } from "../api/users/user";
+import { useRouter } from "next/navigation";
 import {
   ChangeEvent,
   use,
@@ -12,9 +13,12 @@ import {
   KeyboardEvent,
   useEffect,
 } from "react";
-import findUserWithCredentials from "../services/apiService";
+import findUserWithCredentials from "../api/users/userService";
+import getAccountsOwnedByUser from "@/api/accounts/accountService";
 export default function HomePage() {
-  const [isLogin, setIsLogin] = useState(false);
+  // TODO: make it so that username variable is updated if it is autofilled
+  const router = useRouter();
+  const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -82,11 +86,14 @@ export default function HomePage() {
         username: username,
         password: password,
       })
-        .then((res) => {
+        .then(async (res) => {
           if (!res.error) {
-            console.log(`User: ${JSON.stringify(res)}`);
+            const user: User = res;
+            const ownerId = user["id"];
+            // navigate to /home with prop {ownerId: ownerId}
+            router.push(`/home?ownerId=${encodeURIComponent(ownerId)}`);
           } else {
-            console.log(`Failed to log in: ${res.message}`);
+            console.log(`Failed to log in: ${res.error}`);
           }
         })
         .catch((err) => console.log(err));
