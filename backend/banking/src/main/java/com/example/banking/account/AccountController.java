@@ -1,8 +1,11 @@
 package com.example.banking.account;
 
+import com.example.banking.base.BankingApplicationController;
+import com.example.banking.base.ControllerStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,11 +13,14 @@ import java.util.Optional;
 @RequestMapping(path = "api/v1/accounts")
 @CrossOrigin(origins = "*")
 
-public class AccountController {
+public class AccountController extends BankingApplicationController {
 
-    private AccountService accountService;
+    private final AccountService accountService;
+    private ControllerStatus controllerStatus;
+
     @Autowired
     public AccountController(AccountService accountService){
+        super(ControllerStatus.ONLINE);
         this.accountService = accountService;
     }
 
@@ -48,12 +54,8 @@ public class AccountController {
     }
 
     @GetMapping(params = "ownerId")
-    public List<Account> getAccountsOwnedByUser(@RequestParam(required = true) Long ownerId){
-        Optional<List<Account>> accountListOptional = accountService.getAccountsOwnedByUser(ownerId);
-        if (accountListOptional.isEmpty()){
-            throw new UserOwnsNoAccountsException(String.format("User with id %d does not have any accounts.", ownerId));
-        }
-        return accountListOptional.get();
+    public HashMap<String, List<Account>> getAccountsOwnedByUser(@RequestParam(required = true) Long ownerId){
+        return accountService.getAccountsOwnedByUser(ownerId);
     }
 
 }

@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name="accounts")
+@DiscriminatorColumn(name = "account_type")
 public abstract class Account {
     @Id
     @SequenceGenerator(name = "account_sequence",
@@ -18,7 +19,6 @@ public abstract class Account {
     private long ownerId;
     private int balanceCents;
     private LocalDate creationDate;
-
     private int maxDeposit;
 
     public Account(long id, long ownerId, int balanceCents, LocalDate creationDate, int maxDeposit) {

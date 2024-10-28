@@ -1,5 +1,7 @@
 package com.example.banking.user;
 
+import com.example.banking.base.BankingApplicationController;
+import com.example.banking.base.ControllerStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,13 +10,14 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1/users")
 @CrossOrigin(origins = "*")
-public class UserController {
-
+public class UserController extends BankingApplicationController {
     private final UserService userService;
 
     @Autowired
     public UserController(UserService userService){
+        super(ControllerStatus.ONLINE);
         this.userService = userService;
+
     }
 
     @GetMapping
@@ -49,4 +52,6 @@ public class UserController {
             @RequestParam(required = false) String password) {
                 userService.updateUser(userId, firstName, lastName, email, username, password);
             }
+
+    
 }

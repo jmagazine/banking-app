@@ -1,9 +1,11 @@
 package com.example.banking.account;
 
+import com.example.banking.account.investment.Stock;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,8 +81,20 @@ public class AccountService {
     }
 
     @Transactional
-    public Optional<List<Account>> getAccountsOwnedByUser(Long userId) {
-        return accountRepository.getAccountsOwnedByUser(userId);
+    public HashMap<String,List<Account>> getAccountsOwnedByUser(Long userId) {
+        HashMap<String, List<Account>> accountHashMap = new HashMap<>();
+         Optional<List<Account>> acccountsOptional = accountRepository.getAccountsOwnedByUser(userId);
+         if (acccountsOptional.isPresent()){
+             List<Account> accounts = acccountsOptional.get();
+             for (Account account: accounts){
+                 if (account instanceof CheckingAccount){
+                     accountHashMap.get("Checking").add(account);
+                 } else if (account instanceof SavingsAccount){
+                     accountHashMap.get("Savings").add(account);
+                 }
+             }
+         }
+         return accountHashMap;
     }
 }
 
