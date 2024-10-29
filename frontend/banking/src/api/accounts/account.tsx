@@ -1,7 +1,8 @@
 export interface Account {
+  accountType: string;
   id: number;
-  ownerId: string;
-  balanceCents: number;
+  userId: number;
+  balance: number;
   creationDate: string; // can be converted using
   maxDeposit: number;
 }

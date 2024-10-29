@@ -1,0 +1,14 @@
+.navbar {
+  display: flex;
+  font-size: 40px;
+  padding: 10px;
+  width: 100vw;
+  height: 10vh;
+  color: var(--foreground-light);
+  background-color: var(--background-light);
+}
+
+.dashboard-page-container {
+  display: flex;
+  flex-direction: column;
+}

@@ -28,7 +28,9 @@ const findUserWithCredentials = async (
       const user: User = await response.json();
       return user;
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error(`Error occurred in findUserWithCredentials: ${error}`);
+  }
 };
 
 export default findUserWithCredentials;
